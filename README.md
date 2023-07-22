@@ -2223,6 +2223,76 @@ while vertices.hasNext():
 	#print("    type(referent):    {}".format(type(vertex.referent())))
 ```
 
+dingiso Attributed Graph
+
+```python
+from ghidra.service.graph import *
+from ghidra.app.services import GraphDisplayBroker
+from ghidra.app.decompiler import DecompInterface
+from ghidra.framework.plugintool import PluginTool
+from ghidra.program.model.address import Address
+from ghidra.program.model.pcode import PcodeOp
+
+decomplib = DecompInterface()
+decomplib.openProgram(currentProgram)
+graph_type = EmptyGraphType()
+graph = AttributedGraph("Test", graph_type)
+listing = currentProgram.getListing()
+fm = currentProgram.getFunctionManager()
+MAX_NODE = 50  # the ghidra graph service will unstable if too many nodes
+
+def dec_high_func(addr):
+    timeout = 60
+    if not isinstance(addr, Address):
+        addr = toAddr(addr)
+    func = getFunctionContaining(addr)
+    dres = decomplib.decompileFunction(func, timeout, getMonitor())
+    hfunc = dres.getHighFunction()
+    return hfunc
+
+
+funcs = fm.getFunctions(True)  # True mean iterate forward
+func_ver = {}  # function to vertex
+has_edge = {}  # vertex and edges related
+
+for func in funcs:
+    ver_ = graph.addVertex(func.getName(), func.getName())
+    func_ver[func] = ver_
+    has_edge[func] = 0
+
+funcs = fm.getFunctions(True)
+
+for func in funcs:
+    # Add edges for static calls
+    entryPoint = func.getEntryPoint()
+    hfunc = dec_high_func(entryPoint)
+    for pcode_ in hfunc.getPcodeOps():
+        if pcode_.getOpcode() == PcodeOp.CALL:
+            target_addr = pcode_.getInput(0).getOffset()
+            to_func = fm.getFunctionAt(toAddr(target_addr))
+            graph.addEdge(func_ver[func], func_ver[to_func])
+            has_edge[func] += 1
+            has_edge[to_func] += 1
+
+# sort the function by edge numbers
+sorted_tuples = sorted(has_edge.items(), key=lambda x: x[1], reverse=True)
+func_num = 0
+for func_ in has_edge:
+    # the ghidra graph service can not handle node more than 500
+    if has_edge[func_] == 0:
+        graph.removeVertex(func_ver[func_])
+    elif func_num > MAX_NODE:
+        graph.removeVertex(func_ver[func_])
+    else:
+        func_num += 1
+
+
+tool = getState().getTool()
+service = tool.getService(GraphDisplayBroker)
+display = service.getDefaultGraphDisplay(False, monitor)
+display.setGraph(graph, "Test", False, monitor)
+```
+
 <details>
 <summary>Output example</summary>
 
