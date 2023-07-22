@@ -19,7 +19,11 @@ Feel free to submit pull requests to master on this repo with any modifications 
 
 # Table of Contents
 
-Working with the User
+<details>
+<summary>Working with the User</summary>
+* [`Foo`](#foo)
+</details>
+
 
 <details>
 <summary>Working with the Flat APIs</summary>
@@ -900,6 +904,7 @@ instructions = listing.getInstructions(entryPoint, True)
 for instruction in instructions:
     addr = instruction.getAddress()
     oper = instruction.getMnemonicString()
+    number_operands = instruction.getNumOperands()
     if (oper.startswith('CALL') or oper.startswith('J') and instruction.getRegister(0)):
         print("0x{} : {}".format(addr, instruction))
 ```
@@ -995,6 +1000,20 @@ def get_label(address):
 ```
 
 <br>[⬆ Back to top](#table-of-contents)
+
+### Search for Bytes
+Using FlatAPI to search for bytes in memory.
+
+```
+from ghidra.program.flatapi import FlatProgramAPI
+
+def search_memory(string, max_results=128):
+	fpi = FlatProgramAPI(getCurrentProgram())
+	return fpi.findBytes(currentProgram.getMinAddress(), ''.join(['.' if '?' in x else f'\\x{x}' for x in string.split()]), max_results)
+
+addresses = search_memory('55 8b ec 83 ec 20 8b 4? ?? 33')
+for address in addresses: print(address)
+```
 
 
 ## Working with Variables
