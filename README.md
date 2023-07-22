@@ -12,6 +12,11 @@ At some point however, you need to reach outside of the Flat APIs to do really i
 
 Feel free to submit pull requests to master on this repo with any modifications you see fit. Most of these snippets are meant to be verbose, but if you know of a better way to do something, please share it via pull request or submitting an issue. Thanks!
 
+# REsrouces
+
+- Great place to collect info. It seems this just rehosts internal docs from Ghidra html help pages https://fossies.org/linux/ghidra/Ghidra/Features/Base/src/main/help/help/topics/CommentsPlugin/Comments.htm
+- 
+
 # Table of Contents
 
 Working with the User
@@ -459,6 +464,10 @@ createBookmark(addr, 'category', 'description')
 
 ## Working with Functions
 A *Function* is a subroutine within an Program. The snippets in this section deal with gathering information about Functions and modifying them within an Program.
+
+### Function from Address
+
+
 
 ### Enumerate all functions printing their name and address
 There are at least two ways to do this. The output is the same for each method.
