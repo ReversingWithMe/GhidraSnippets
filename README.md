@@ -1344,7 +1344,7 @@ Symbol 6:
 
 ![Comments](https://github.com/ReversingWithMe/GhidraSnippets/assets/22553347/4f37a6cf-8ff4-4ae1-ba2d-ee34d2e50d8a)
 
-There is a plugin built into Ghidra to show comment history, this should be tested to see if it records history at same address or whether it just shows the time each comment was added.
+There is a plugin built into Ghidra to show comment history, the plugin is individual to each comment, and does track history of that comment. It allows selecting a comment via context menu and requesting comment history.
 
 This coment history coudl be used to track manual RE path.
 
