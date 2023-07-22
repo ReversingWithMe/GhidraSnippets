@@ -977,6 +977,21 @@ def get_section_bytes(section_name):
 	return get_bytes(section.getStart(), section.getSize())
 ```
 
+<br>[⬆ Back to top](#table-of-contents)
+
+### Get labels for Address
+TODO:: This appears to only get the primary label for a given address.
+
+```
+def get_label(address):
+	result = currentProgram.getListing().getCodeUnitAt(address)
+	if result is None: return None
+	return result.getLabel()
+
+```
+
+<br>[⬆ Back to top](#table-of-contents)
+
 
 ## Working with Variables
 
