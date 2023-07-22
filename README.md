@@ -136,7 +136,11 @@ Working with the User
 ## Working with the User
 
 ### Ask for File
+```
 askFile('Title', 'Okay').toString()
+```
+
+<br>[⬆ Back to top](#table-of-contents)
 
 ## Working with the Flat APIs
 As stated in the introduction, the simplest method of using Ghidra's API is via the Flat APIs. As of Ghidra 10.2 this includes FlatProgramAPI, FlatDecompilerAPI, and the most recent FlatDebuggerAPI. The Flat APIs are designed to offer a stable API interface to some of Ghidra's high level functionality. The simplicity and convenience offered by the Flat APIs can be quickly eclipsed by their limited functionality. However, if what you need to do is offered via the Flat APIs, it's highly recommended you use them.
