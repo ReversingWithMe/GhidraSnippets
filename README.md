@@ -14,6 +14,8 @@ Feel free to submit pull requests to master on this repo with any modifications 
 
 # Table of Contents
 
+Working with the User
+
 <details>
 <summary>Working with the Flat APIs</summary>
 
@@ -69,6 +71,14 @@ Feel free to submit pull requests to master on this repo with any modifications 
 
 </details>
 
+
+<details>
+<summary>Working with Memory</summary>
+
+* [`Read bytes from Address`](#read-bytes-from-address)
+
+</details>
+
 <details>
 <summary>Working with Variables</summary>
 
@@ -117,6 +127,11 @@ Feel free to submit pull requests to master on this repo with any modifications 
 * [`Program Slices`](#program-slices)
 
 </details>
+
+## Working with the User
+
+### Ask for File
+askFile('Title', 'Okay').toString()
 
 ## Working with the Flat APIs
 As stated in the introduction, the simplest method of using Ghidra's API is via the Flat APIs. As of Ghidra 10.2 this includes FlatProgramAPI, FlatDecompilerAPI, and the most recent FlatDebuggerAPI. The Flat APIs are designed to offer a stable API interface to some of Ghidra's high level functionality. The simplicity and convenience offered by the Flat APIs can be quickly eclipsed by their limited functionality. However, if what you need to do is offered via the Flat APIs, it's highly recommended you use them.
@@ -429,6 +444,18 @@ Name: _elfSectionHeaders, Size: 1856
 
 <br>[⬆ Back to top](#table-of-contents)
 
+### Program Addresses
+
+```
+currentProgram.getMinAddress()
+currentProgram.getMaxAddress()
+```
+
+### Programatic Bookmark
+
+```
+createBookmark(addr, 'category', 'description')
+```
 
 ## Working with Functions
 A *Function* is a subroutine within an Program. The snippets in this section deal with gathering information about Functions and modifying them within an Program.
@@ -925,6 +952,23 @@ for i,mnem in ins_sorted:
 
 <br>[⬆ Back to top](#table-of-contents)
 
+## Working with Memory
+
+### Read Bytes from Addres
+
+```
+def get_bytes(address, size):
+	return bytes(map(lambda b: b & 0xff, getBytes(address, size)))
+```
+
+### Get Bytes from section
+```
+def get_section_bytes(section_name):
+	section = getMemoryBlock(section_name)
+	return get_bytes(section.getStart(), section.getSize())
+```
+
+
 ## Working with Variables
 
 ### Get a stack variable from a Varnode or VarnodeAST
@@ -1289,6 +1333,12 @@ Symbol 6:
 
 ## Working with Comments
 
+![Comments](https://github.com/ReversingWithMe/GhidraSnippets/assets/22553347/4f37a6cf-8ff4-4ae1-ba2d-ee34d2e50d8a)
+
+There is a plugin built into Ghidra to show comment history, this should be tested to see if it records history at same address or whether it just shows the time each comment was added.
+
+This coment history coudl be used to track manual RE path.
+
 ### Get all Automatic comments for a function
 
 Ghidra adds "automatic comments" (light gray in color) in the EOL field. Here's how you can access those comments.
@@ -1367,6 +1417,36 @@ for func in funcs:
 </details>
 
 <br>[⬆ Back to top](#table-of-contents)
+
+### Set Comment at Address
+
+```
+EOL_COMMENT
+PLATE_COMMENT
+POST_COMMENT
+PRE_COMMENT
+REPEATABLE_COMMENT
+```
+
+```
+from ghidra.program.model.listing import CodeUnit
+
+cu = currentProgram.getListing().getCodeUnitAt(addr)
+cu.getComment(CodeUnit.EOL_COMMENT)
+cu.setComment(CodeUnit.EOL_COMMENT, "Comment text")
+
+def set_comment_eol(address, text, debug=False):
+    cu = currentProgram.getListing().getCodeUnitAt(address)
+    if debug is False: cu.setComment(CodeUnit.EOL_COMMENT, text)
+    if debug is True: print(str(address) + ' | ' + text)
+
+```
+
+Instead of requiring the usage on a code unit.
+```
+# Directly on address, instead of on code unit
+currentProgram.getListing().setComment(currentAddress, ghidra.program.model.listing.CodeUnit.REPEATABLE_COMMENT, 'test repeatable comment')
+```
 
 
 ## Working with PCode
