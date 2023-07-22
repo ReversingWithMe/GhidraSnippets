@@ -12,10 +12,10 @@ At some point however, you need to reach outside of the Flat APIs to do really i
 
 Feel free to submit pull requests to master on this repo with any modifications you see fit. Most of these snippets are meant to be verbose, but if you know of a better way to do something, please share it via pull request or submitting an issue. Thanks!
 
-# REsrouces
+# REsources
 
 - Great place to collect info. It seems this just rehosts internal docs from Ghidra html help pages https://fossies.org/linux/ghidra/Ghidra/Features/Base/src/main/help/help/topics/CommentsPlugin/Comments.htm
-- 
+- LoremIpsum
 
 # Table of Contents
 
