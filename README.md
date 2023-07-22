@@ -97,6 +97,14 @@ Feel free to submit pull requests to master on this repo with any modifications 
 </details>
 
 <details>
+<summary>Working with Types</summary>
+
+* [`Get Current Program DataTypes`](#get-current-program-datatypes)
+* [`Get and Add Enums`](#get-and-add-enums)
+
+</details>
+
+<details>
 <summary>Working with the Decompiler</summary>
 
 * [`Print decompiled code for a specific function`](#print-decompiled-code-for-a-specific-function)
@@ -1141,6 +1149,50 @@ Python output goes here...
 </details>
 
 <br>[⬆ Back to top](#table-of-contents)
+
+## Workign with DataTypes
+
+### Get Current Program DataTypes
+
+```python
+def get_currentprogram_datatypes():
+    dataTypeManager = currentProgram.getDataTypeManager()
+    return dataTypeManager.getAllDataTypes()
+```
+
+### Get and Set Enums
+
+Access Enum data and add new enum definitions. From GUI this is unnecessary, as you can use DataType manager and struct editor.
+
+```python
+from ghidra.program.model.data import EnumDataType
+
+def get_enums():
+    dataTypeManager = getCurrentProgram().getDataTypeManager()
+    dts = dataTypeManager.getAllDataTypes()
+    return [dt for dt in dts if isinstance(dt, EnumDB)]
+
+def enums_to_dict(enums):
+    r = []
+    for enum in enums:
+        d = {}
+        names = enum.getNames()
+        for name in names:
+            d[name] = enum.getValue(name)
+        r.append(
+            {
+                'name': enum.getName(),
+                'values': d
+            }
+        )
+    return r
+enum = EnumDataType("EnumName", length)
+enum.add("One", 1)
+enum.add("Two", 2)
+enum.add("Three", 3)
+dataTypeManager.addDataType(enum, None)
+
+```
 
 ## Working with Basic Blocks
 Basic Blocks are collections of continuous non-branching instructions within Functions. They are joined by conditional and non-conditional branches, revealing valuable information about a program and function's code flow. This section deals with examples working with Basic Block models.
