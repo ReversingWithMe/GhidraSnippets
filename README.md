@@ -15,7 +15,7 @@ Feel free to submit pull requests to master on this repo with any modifications 
 # REsources
 
 - Great place to collect info. It seems this just rehosts internal docs from Ghidra html help pages https://fossies.org/linux/ghidra/Ghidra/Features/Base/src/main/help/help/topics/CommentsPlugin/Comments.htm
-- LoremIpsum
+- Helpful cheatsheet, https://c3rb3ru5d3d53c.github.io
 
 # Table of Contents
 
