@@ -85,6 +85,8 @@ Feel free to submit pull requests to master on this repo with any modifications 
 <summary>Working with Memory</summary>
 
 * [`Read bytes from Address`](#read-bytes-from-address)
+* [`Offset from Address`](#offset-from-address)
+* [`Get Bytes from section`](#get-bytes-from-section)
 
 </details>
 
@@ -985,6 +987,12 @@ for i,mnem in ins_sorted:
 ```
 def get_bytes(address, size):
 	return bytes(map(lambda b: b & 0xff, getBytes(address, size)))
+```
+
+### Offset from Address
+
+```
+currentProgram.getMemory().getAddressSourceInfo(addr).getFileOffset()
 ```
 
 ### Get Bytes from section
